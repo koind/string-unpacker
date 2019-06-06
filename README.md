@@ -26,6 +26,9 @@ import (
 func main() {
 	resultStr := unpacker.Unpack("a4bc2d5e")
 	println(resultStr) // aaaabccddddde
+	
+	resultStr = unpacker.Unpack("°5€1")
+	println(resultStr) // °°°°°€
 }
 ```
 
