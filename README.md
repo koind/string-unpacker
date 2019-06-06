@@ -20,10 +20,12 @@ Package usage example.
 package main
 
 import (
-	unpacker "github.com/koind/string-unpacker"
+	"github.com/koind/string-unpacker"
 )
 
 func main() {
+	unpacker := string_unpacker.NewUnpacker()
+	
 	resultStr := unpacker.Unpack("a4bc2d5e")
 	println(resultStr) // aaaabccddddde
 	

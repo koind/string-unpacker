@@ -7,7 +7,15 @@ import (
 	"unicode/utf8"
 )
 
-func Unpack(text string) string {
+type unpacker struct {
+	slice []string
+}
+
+func NewUnpacker() *unpacker {
+	return &unpacker{}
+}
+
+func (u *unpacker) Unpack(text string) string {
 	if text == "" || isInt(text) {
 		return ""
 	}
@@ -16,7 +24,7 @@ func Unpack(text string) string {
 		return ""
 	}
 
-	strSlice := make([]string, 0, len(text))
+	u.slice = make([]string, 0, len(text))
 
 	b := []byte(text)
 
@@ -24,19 +32,31 @@ func Unpack(text string) string {
 		r, size := utf8.DecodeRune(b)
 
 		if unicode.IsNumber(r) {
-			previousSymbol := strSlice[len(strSlice)-1]
-			intVal, _ := strconv.Atoi(string(r))
-
-			str := strings.Repeat(previousSymbol, intVal)
-			strSlice[len(strSlice)-1] = str
+			u.propagate(r)
 		} else {
-			strSlice = append(strSlice, string(r))
+			u.append(string(r))
 		}
 
 		b = b[size:]
 	}
 
-	return strings.Join(strSlice, "")
+	return u.join()
+}
+
+func (u *unpacker) append(str string) {
+	u.slice = append(u.slice, str)
+}
+
+func (u *unpacker) propagate(r rune) {
+	previousSymbol := u.slice[len(u.slice)-1]
+	intVal, _ := strconv.Atoi(string(r))
+
+	str := strings.Repeat(previousSymbol, intVal)
+	u.slice[len(u.slice)-1] = str
+}
+
+func (u *unpacker) join() string {
+	return strings.Join(u.slice, "")
 }
 
 func isInt(strVal string) bool {
@@ -45,4 +65,8 @@ func isInt(strVal string) bool {
 	}
 
 	return false
+}
+
+func isReverseSolidus(r rune) bool {
+	return `\` == string(r)
 }

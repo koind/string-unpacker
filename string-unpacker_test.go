@@ -13,8 +13,10 @@ var testCases = map[string]string{
 }
 
 func TestUnpack(t *testing.T) {
+	unpacker := NewUnpacker()
+
 	for inputVal, expected := range testCases {
-		if resultVal := Unpack(inputVal); resultVal != expected {
+		if resultVal := unpacker.Unpack(inputVal); resultVal != expected {
 			t.Errorf("Strings must by match: %s - %s", expected, resultVal)
 		}
 	}
