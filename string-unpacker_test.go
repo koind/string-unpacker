@@ -7,7 +7,9 @@ import (
 var testCases = map[string]string{
 	"a4bc2d5e": "aaaabccddddde",
 	"abcd":     "abcd",
+	"°5€1":     "°°°°°€",
 	"45":       "",
+	"5oijsd":   "",
 }
 
 func TestUnpack(t *testing.T) {
