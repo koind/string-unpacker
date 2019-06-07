@@ -8,7 +8,7 @@ import (
 )
 
 type unpacker struct {
-	slice []string
+	symbols []string
 }
 
 func NewUnpacker() *unpacker {
@@ -24,7 +24,7 @@ func (u *unpacker) Unpack(text string) string {
 		return ""
 	}
 
-	u.slice = make([]string, 0, len(text))
+	u.symbols = make([]string, 0, len(text))
 
 	b := []byte(text)
 
@@ -44,19 +44,19 @@ func (u *unpacker) Unpack(text string) string {
 }
 
 func (u *unpacker) append(str string) {
-	u.slice = append(u.slice, str)
+	u.symbols = append(u.symbols, str)
 }
 
 func (u *unpacker) propagate(r rune) {
-	previousSymbol := u.slice[len(u.slice)-1]
+	previousSymbol := u.symbols[len(u.symbols)-1]
 	intVal, _ := strconv.Atoi(string(r))
 
 	str := strings.Repeat(previousSymbol, intVal)
-	u.slice[len(u.slice)-1] = str
+	u.symbols[len(u.symbols)-1] = str
 }
 
 func (u *unpacker) join() string {
-	return strings.Join(u.slice, "")
+	return strings.Join(u.symbols, "")
 }
 
 func isInt(strVal string) bool {
