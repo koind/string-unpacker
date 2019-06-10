@@ -7,6 +7,10 @@ import (
 	"unicode/utf8"
 )
 
+const (
+	backslash = `\`
+)
+
 type unpacker struct {
 	symbols []string
 }
@@ -67,6 +71,6 @@ func isInt(strVal string) bool {
 	return false
 }
 
-func isReverseSolidus(r rune) bool {
-	return `\` == string(r)
+func isBackslash(r rune) bool {
+	return string(r) == backslash
 }
